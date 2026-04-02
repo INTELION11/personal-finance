@@ -1,0 +1,66 @@
+555555555555555555set file_name to "savings_goals.csv"
+
+ Check if "savings_goals.csv" exists
+
+If the file does not exist
+    create "savings_goals.csv" with columns:
+    goal_name, savings_goal, saved_money
+end choice
+
+Function for mainn
+While true
+
+    show "choose an option"
+    show "1. see all goals and their progress"
+    show "2. make a new goal"
+    show "3. add money to an existing goal"
+    show "4.  exit"
+
+    ask user for menu_choice
+
+    if menu_choice is 1
+
+        read all goals from the csv file
+
+        for each goal in the file
+            show goal_name
+            show savings_goal, "/", saved_money
+            calculate percent_complete by dividing saved_money by savings_goal and multiplying by 100
+            Print "progress:", percent_complete, "%"
+        end loop
+
+    else if menu_choice is 2
+
+        ask user for goal_name
+        ask user how much they want to save
+        set saved_money to 0
+        add a new row to the csv file with:
+        goal_name, savings_goal, saved_money
+        show "new goal added"
+
+    else if menu_choice is 3
+
+        read all goals from the cssv file
+        show all goal names
+
+        ask user which goal they want to add money to
+
+        find that goal in the csv file
+
+        ask how much money to add
+        add that amount to saved_money
+
+        update the goal’s saved_money in the csv file
+
+        show "money added successfully. Yayy"
+
+    else if menu_choice is 4
+
+        show "goodbye"
+        stop program
+
+    else
+
+        show "invalid choice, try again"
+
+	break
