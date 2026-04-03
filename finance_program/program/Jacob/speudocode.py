@@ -11,7 +11,7 @@ try:
             processing()
             password = input("\033[38;2;0;125;1mEnter your password:\n").strip()
             if password == "exit" or password == "Exit":
-                clearr()
+                clear()
                 return password
             encripted_pass = hash(password, option)
             if encripted_pass == users[option]:
