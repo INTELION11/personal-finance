@@ -6,3 +6,4 @@ from Jacob.loginout import regis, login, hash
 from Jacob.coding import currency, budgeting, time_frame
 
 regis()
+login()

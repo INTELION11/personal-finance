@@ -1,6 +1,5 @@
 import csv  
 from helper import sprint  
-# from forex_python.converter import CurrencyRates 
 def time_frame(username, frame):  
     # open income.csv, look for username, get income if it exists  
     income_file = "finance_program/documents/income.csv"  
@@ -147,7 +146,8 @@ def budgeting(username, income):
 def currency(money, option):  
     
     # use forex to get live currency conversion  
-    try:  
+    try:
+        from forex_python.converter import CurrencyRates  
         c = CurrencyRates()  
         # option == "1": USD to JPY  
         if option == "1" or option == "usd":  
