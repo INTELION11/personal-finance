@@ -1,6 +1,6 @@
 import csv  
 from helper import sprint  
-from forex_python.converter import CurrencyRates 
+# from forex_python.converter import CurrencyRates 
 def time_frame(username, frame):  
     # open income.csv, look for username, get income if it exists  
     income_file = "finance_program/documents/income.csv"  
@@ -143,11 +143,9 @@ def budgeting(username, income):
                     writer = csv.writer(file)  
                     for cat, pct in budget_info.items():  
                         writer.writerow([cat, pct])  
-                return  
-
- 
-  
+                return   
 def currency(money, option):  
+    
     # use forex to get live currency conversion  
     try:  
         c = CurrencyRates()  
@@ -173,4 +171,3 @@ def currency(money, option):
             return f"£{money * 0.8:.2f} Pound (backup)"  
         else:  
             return f"${money:.2f} USD (backup)"  
-  

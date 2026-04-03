@@ -3,14 +3,12 @@ import csv
 import hashlib
 from helper import sprint, processing, clearr
 import hashlib  
-from faker import Faker
 def regis():
     def pass_cheker():  
         special_characters = "!@#\$%^&*()_+-=[]{|;:,}.><?)"  
         numbers = "1234567890"  
         while True:  
-            #password = input("\033[38;2;49;125;125mgood, now select your password, or type exit to exit, \033[38;2;255;1;1mmake sure its a strong password with all basics, '/' does not work\n").strip()
-            password = faker.password(length=12, special_chars=True, digits=True, upper_case=True, lower_case=True)  
+            password = input("\033[38;2;49;125;125mgood, now select your password, or type exit to exit, \033[38;2;255;1;1mmake sure its a strong password with all basics, '/' does not work\n").strip()
             if password == "exit" or password == "Exit":
                 password = "exit"
                 return password
@@ -36,8 +34,8 @@ def regis():
                 return password   
     loop = True  
     while loop:  
-        #option = input("\033[38;2;49;125;125mWhat is your username? or type exit to exit\n").strip()
-        option = faker.name() 
+        option = input("\033[38;2;49;125;125mWhat is your username? or type exit to exit\n").strip()
+       
         if option == "exit":
             clearr()  
             loop = False
