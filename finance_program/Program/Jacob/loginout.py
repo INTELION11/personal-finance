@@ -1,15 +1,16 @@
 # JQ 2nd Loginout 
 import csv  
 import hashlib
-from helpering import sprint, clearr, processing
+from helper import sprint, processing, clearr
 import hashlib  
-
+from faker import Faker
 def regis():
     def pass_cheker():  
         special_characters = "!@#\$%^&*()_+-=[]{|;:,}.><?)"  
         numbers = "1234567890"  
         while True:  
-            password = input("\033[38;2;49;125;125mgood, now select your password, or type exit to exit, \033[38;2;255;1;1mmake sure its a strong password with all basics, '/' does not work\n").strip()
+            #password = input("\033[38;2;49;125;125mgood, now select your password, or type exit to exit, \033[38;2;255;1;1mmake sure its a strong password with all basics, '/' does not work\n").strip()
+            password = faker.password(length=12, special_chars=True, digits=True, upper_case=True, lower_case=True)  
             if password == "exit" or password == "Exit":
                 password = "exit"
                 return password
@@ -35,14 +36,15 @@ def regis():
                 return password   
     loop = True  
     while loop:  
-        option = input("\033[38;2;49;125;125mWhat is your username? or type exit to exit\n").strip()  
+        #option = input("\033[38;2;49;125;125mWhat is your username? or type exit to exit\n").strip()
+        option = faker.name() 
         if option == "exit":
             clearr()  
             loop = False
             return option
               
         try:  
-            with open("Documents/pass_a_user.csv", mode="r+") as file:  
+            with open("finance_program/documents/login_Revulet.csv", mode="r+") as file:  
                 reader = csv.reader(file, delimiter=',')   
                 users = []  
                 for line in reader:  
@@ -66,7 +68,7 @@ def regis():
                 loop = False
                 return 
             try:  
-                with open("Documents/pass_a_user.csv", mode="a", newline='') as file:  
+                with open("finance_program/documents/login_Revulet.csv", mode="a", newline='') as file:  
                     writer = csv.writer(file)  
                     writer.writerow([option, encripted_pass])
                 processing()
@@ -86,7 +88,7 @@ def login():
             loop = False  
             return 'exit'
         try:  
-            with open("Documents/pass_a_user.csv", mode="r") as file:  
+            with open("finance_program/documents/login_Revulet.csv", mode="r") as file:  
                 reader = csv.reader(file, delimiter=',')                               
                 users = {}                                      
                 for line in reader:                             
@@ -120,4 +122,3 @@ def hash(password, username):
     return marmalade  
 
 
-regis()
