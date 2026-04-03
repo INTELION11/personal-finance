@@ -21,4 +21,3 @@ intake csv and what part of csv to pull from and username
     call piechart function
     input data and categories from the csv
     take csv data from chosen collumns and username
-    
