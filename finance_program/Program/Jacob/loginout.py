@@ -76,7 +76,7 @@ def regis():
              
             except:  
                 sprint("\033[38;2;49;125;125mCould not write to file.")  
-            return option  
+            return str(option)
 def login():  
     loop = True  
     while loop:  

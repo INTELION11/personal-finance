@@ -5,5 +5,6 @@ from helper import sprint, processing, clearr
 from Jacob.loginout import regis, login, hash
 from Jacob.coding import currency, budgeting, time_frame
 
-regis()
-login()
+
+username = regis()
+budgeting(username,time_frame(username,"mo"))
