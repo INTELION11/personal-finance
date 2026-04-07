@@ -25,8 +25,3 @@ def piechart(categories, data):
 
 def pull_info(chosen_file, username, categories, data):
     pass
-            
-items = [str(fake.word()), str(fake.word()), str(fake.word()), str(fake.word()), str(fake.word())]
-data = [random.randint(1, 100), random.randint(1, 100), random.randint(1, 100), random.randint(1, 100), random.randint(1, 100)]
-
-piechart(items, data)
