@@ -1,6 +1,7 @@
 #Initializw stuff
 import tkinter as tk
 from tkinter import messagebox
+from gui import tkinterApp
 import csv
 import os
 
@@ -25,9 +26,10 @@ def save_goals(goals):
         writer.writerows(goals)
 
 #make a class for savings
-class Savings:
+class Savings(tk.Frame):
     #initialize
-    def __init__(self, root, user_id):
+    def __init__(self, root, user_id, parent):
+        tk.Frame.__init__(self, parent)
         self.root = root
         self.user_id = user_id
         self.root.title("Savings Goal Tracker")
@@ -144,6 +146,3 @@ def saving_main():
     root = tk.Tk()
     run = Savings(root, user_id)#call
     root.mainloop()#run
-
-
-saving_main()

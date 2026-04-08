@@ -2,12 +2,13 @@
 
 import tkinter as tk
 from tkinter import ttk
+from savings import Savings, save_goals
+
 
 LARGEFONT =("Verdana", 35)
 
 import csv  
 import hashlib
-import hashlib  
           
 def login(option, password):  
     loop = True  
@@ -209,41 +210,13 @@ class Signup(tk.Frame):
             width=50, 
             font=("Helvetica", 15), 
             bg="white")
+        
 
-        def pass_cheker():  
-            special_characters = "!@#\\$%^&*()_+-=[]{|;:,}.><?)"  
-            numbers = "1234567890"  
-            while True:  
-                password = input("\033[38;2;49;125;125mgood, now select your password, or type exit to exit, \033[38;2;255;1;1mmake sure its a strong password with all basics, '/' does not work\n").strip()
-                if password == "exit" or password == "Exit":
-                    password = "exit"
-                    return password
-                errors = []  
-                if len(password) < 8:  
-                    errors.append("at least 8 characters")  
-                if not any(char in numbers for char in password):  
-                    errors.append("a number")  
-                if not any(char in special_characters for char in password):  
-                    errors.append("a special character")  
-                if not any(char.isupper() for char in password):  
-                    errors.append("an uppercase letter")  
-                if not any(char.islower() for char in password):  
-                    errors.append("a lowercase letter")  
-                
-                if errors:
-                      
-                    print("\033[38;2;255;1;1mPassword is not strong enough, What are you, a millenial?🤣\n")  
-                    print("\033[38;2;255;1;1mMissing: " + ", ".join(errors) + "\n")  
-                else:
-                      
-                    print("\033[38;2;49;125;125mPassword is strong!\n")  
-                    return password
                 
         def check_username(username):
             loop = True  
             while loop:  
                 username=username_entry.get()
-    
                 try:  
                     with open("finance_program/documents/login_Revulet.csv", mode="r+") as file:  
                         reader = csv.reader(file, delimiter=',')   
@@ -263,34 +236,14 @@ class Signup(tk.Frame):
                         found = True 
                         loop = False 
                         break  
-                if not found:  
-                    
-                    password = pass_cheker()
-                    encripted_pass = hash(password,username)
-                    if password == "exit" or password == "Exit":
-                          
-                        loop = False
-                        return 
-                    try:  
-                        with open("finance_program/documents/login_Revulet.csv", mode="a", newline='') as file:  
-                            writer = csv.writer(file)  
-                            writer.writerow([username, encripted_pass])
-                        
-                         
-                        user_added = "User added"
-                        check_label['text'] = str(user_added)
-                        
-                    
-                    except:  
-                        could_not_write = "Could not write to file"
-                        check_label['text'] = str(could_not_write)
-                    return username
+                if not found:
+                    controller.showframe(SignupEnterPass)
+    
                 
-        def user_pass():
+        def get_user():
             user_text = username_entry.get()
             print(user_text)
             check_username(user_text)
-            lambda : controller.show_frame(SignupEnterPass)
 
         submit_button = tk.Button(self, 
             text="Submit", 
@@ -302,7 +255,7 @@ class Signup(tk.Frame):
             activebackground="grey", 
             activeforeground="white", 
             overrelief="solid",
-            command= user_pass)
+            command= get_user)
         
         check_label = tk.Label(self,
             text="",
@@ -343,9 +296,61 @@ class SignupEnterPass(tk.Frame):
             bg="white",
             show="*")
         
-        def print_pass():
+        def pass_enter(username):
+            password = pass_cheker()
+            encripted_pass = hash(password,username)
+            if password == "exit" or password == "Exit":
+                    
+                loop = False
+                return 
+            try:  
+                with open("finance_program/documents/login_Revulet.csv", mode="a", newline='') as file:  
+                    writer = csv.writer(file)  
+                    writer.writerow([username, encripted_pass])
+                
+                    
+                user_added = "User added"
+                check_label['text'] = str(user_added)
+                
+            
+            except:  
+                could_not_write = "Could not write to file"
+                check_label['text'] = str(could_not_write)
+            return username
+        
+        def pass_cheker():  
+            special_characters = "!@#\\$%^&*()_+-=[]{|;:,}.><?)"  
+            numbers = "1234567890"  
+            while True:  
+                password = input("\033[38;2;49;125;125mgood, now select your password, or type exit to exit, \033[38;2;255;1;1mmake sure its a strong password with all basics, '/' does not work\n").strip()
+                if password == "exit" or password == "Exit":
+                    password = "exit"
+                    return password
+                errors = []  
+                if len(password) < 8:  
+                    errors.append("at least 8 characters")  
+                if not any(char in numbers for char in password):  
+                    errors.append("a number")  
+                if not any(char in special_characters for char in password):  
+                    errors.append("a special character")  
+                if not any(char.isupper() for char in password):  
+                    errors.append("an uppercase letter")  
+                if not any(char.islower() for char in password):  
+                    errors.append("a lowercase letter")  
+                
+                if errors:
+                      
+                    print("\033[38;2;255;1;1mPassword is not strong enough, What are you, a millenial?🤣\n")  
+                    print("\033[38;2;255;1;1mMissing: " + ", ".join(errors) + "\n")  
+                else:
+                      
+                    print("\033[38;2;49;125;125mPassword is strong!\n")  
+                    return password
+        
+        def get_pass():
             pass_text = password_entry.get()
             print(pass_text)
+            #pass_enter(username)
 
         submit_button = tk.Button(self, 
             text="Login", 
@@ -357,7 +362,11 @@ class SignupEnterPass(tk.Frame):
             activebackground="grey", 
             activeforeground="white", 
             overrelief="solid",
-            command=print_pass)
+            command=get_pass)
+        
+        check_label = tk.Label(self,
+            text="",
+            font=("Helvetica", 15))
         
         back_button = tk.Button(self, 
             text="Back", 
@@ -418,7 +427,9 @@ class MainMenu(tk.Frame):
             bg="white", 
             activebackground="grey", 
             activeforeground="white", 
-            overrelief="solid")
+            overrelief="solid", 
+            #command = lambda : controller.show_frame(Page2)
+            )
         
         exit = tk.Button(self, 
             text="Exit", 
@@ -438,6 +449,8 @@ class MainMenu(tk.Frame):
         budgeting_button.pack(padx=20, pady=10, anchor="center")
         savings_goal_tracker_button.pack(padx=20, pady=10, anchor="center")
         exit.pack(padx=20, pady=10, anchor="center")
+
+
         
 
 app = tkinterApp()
