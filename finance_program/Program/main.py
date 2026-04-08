@@ -6,5 +6,6 @@ from Jacob.loginout import regis, login, hash
 from Jacob.coding import currency, budgeting, time_frame
 #from Arsh.gui import *
 
-regis()
-login()
+
+username = regis()
+budgeting(username,time_frame(username,"mo"))

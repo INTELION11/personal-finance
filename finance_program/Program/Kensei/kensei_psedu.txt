@@ -6,7 +6,7 @@ If the file does not exist
     create "savings_goals.csv" with columns:
     goal_name, savings_goal, saved_money
 end choice
-fds
+
 Function for mainn
 While true
 
