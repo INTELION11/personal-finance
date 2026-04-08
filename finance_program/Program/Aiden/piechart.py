@@ -24,4 +24,31 @@ def piechart(categories, data):
         print(i)
 
 def pull_info(chosen_file, username, categories, data):
-    pass
+        all = []
+    with open("Documents/A_Highscores.csv", mode= 'r') as sample:
+        reader = csv.reader(sample)
+        for line in reader:
+            if line[0] == 'Username':
+                pass
+            else:
+                all.append({'Username':line[0] ,'Highscore':line[1] ,'Latest Score':line[2]})
+        for line in all:
+            if line["Username"] == username:
+                newline = line
+                all.remove(line)
+                newline['Latest Score'] = score
+                if score > int(newline['Highscore']):
+                    newline['Highscore'] = score
+                else:
+                    pass
+            else:
+                pass
+        try:
+            all.append(newline)
+        except:
+            all.append({'Username':username ,'Highscore':score ,'Latest Score':score})
+    with open("Documents/A_Highscores.csv", mode= 'w', newline= '') as sample:
+        fieldnames = ['Username','Highscore','Latest Score']
+        writer = csv.DictWriter(sample, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(all)
