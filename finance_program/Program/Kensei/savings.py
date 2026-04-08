@@ -73,7 +73,7 @@ class Savings:
             if name == "" or amount <= 0:
                 raise ValueError
         except ValueError:
-            messagebox.showerror("Error", "Enter a valid goal name and amount.")
+            messagebox.showerror("Error", "Enter a valid goal name or amount")
             return
 
         goals = load_goals()
@@ -113,7 +113,7 @@ class Savings:
             if amount <= 0:
                 raise ValueError
         except ValueError:
-            messagebox.showerror("Error", "Enter a valid amount.")
+            messagebox.showerror("Error", "Enter a valid amount DumbButt")
             return
 
         goals = load_goals()
@@ -139,11 +139,11 @@ class Savings:
 
 
 
-def main():
+def saving_main():
     user_id = "test_user"  #login system will replace this
     root = tk.Tk()
     run = Savings(root, user_id)#call
     root.mainloop()#run
 
 
-main()
+saving_main()
