@@ -1,5 +1,6 @@
 # High Score Tracker
 ***
+
 This is a tool that you can use to track many things pertaining to your finances, including budgeting, income, 
 
 ## How to use High Score Tracker
