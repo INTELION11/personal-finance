@@ -2,6 +2,7 @@
 [Main Menu](finance_program/documents/Screenshot2026-04-09101005.png)
 
 ***
+
 This is a tool that you can use to track many things pertaining to your finances, including budgeting, income, 
 
 ## How to use Finance Tracker
