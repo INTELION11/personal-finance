@@ -1,6 +1,6 @@
 import csv  
 from helper import sprint
-from Aiden.piechart import piechart
+# from Aiden.piechart import piechart
 def time_frame(username, frame):  
     # open income.csv, look for username, get income if it exists  
     income_file = "finance_program/documents/income.csv"  
@@ -53,7 +53,7 @@ def time_frame(username, frame):
         return income  
 # define budgeting function to take in username and income  
 def budgeting(username, income):  
-    piechart(["a", "b", "c"], [1, 2, 3])  
+    #piechart(["a", "b", "c"], [1, 2, 3])  
   
     # Use a separate budget file for each user  
     user_budget_file = f"finance_program/documents/budget_{username}.csv"  
@@ -65,17 +65,23 @@ def budgeting(username, income):
             for line in reader:  
                 budget_info[line[0]] = float(line[1])  
     except:  
-        sprint("there is no csv for you")  
-        budget_info = {}  
+        sprint("there is no csv for you\n")
+        with open(user_budget_file, mode="w") as file:  
+            pass  
+        with open(user_budget_file, mode="r") as file:  
+            reader = csv.reader(file, delimiter=',')  
+            budget_info = {}  
+            for line in reader:  
+                budget_info[line[0]] = float(line[1])   
   
     if not budget_info:  
-        sprint("No categories found! You have to add some first.")  
+        sprint("No categories found! You have to add some first.\n")  
         change = "yes"  
     else:  
-        sprint("Current categories and budget percentages:")  
+        sprint("Current categories and budget percentages:\n")  
         for category, percent in budget_info.items():  
-            sprint(f"{category}: {percent}%")  
-        change = input("Do you want to make changes? (yes/no): ").strip().lower()  
+            sprint(f"{category}: {percent}%\n")  
+        change = input("Do you want to make changes? (yes/no): \n").strip().lower()  
   
     if change == "no":  
         currency_op = input("what currency do you want? 1.Yen 2.Usa 3.Pound: ").strip().lower()  
@@ -85,22 +91,26 @@ def budgeting(username, income):
         with open(user_budget_file, mode="w", newline='') as file:  
             writer = csv.writer(file)  
             for cat, pct in budget_info.items():  
-                writer.writerow([cat, pct])  
-        return  
+                writer.writerow([cat, pct])
+        return  username
   
-    if change == "yes":  
+    elif change == "yes":  
         universe = True  
         while universe:  
-            sprint("menu: change name / add / remove / change percent / exit / back")  
-            menu = input("what do you want to do? ").strip().lower()  
+            sprint("menu: change name / add / remove / change percent / exit / back\n ")  
+            menu = input("what do you want to do?\n").strip().lower()  
             if menu == "change name":  
                 cat_change = input("what category would you like to change? ").strip()  
                 new_name = input("what would be the new name? ").strip()  
                 if cat_change in budget_info:  
                     budget_info[new_name] = budget_info.pop(cat_change)  
             elif menu == "add":  
-                cat = input("new category name: ").strip()  
-                percent = float(input("what percent of budget for this category? "))  
+                cat = input("new category name: ").strip()
+                try:  
+                    percent = float(input("what percent of budget for this category? "))
+                except:
+                    print("thats not allowed")
+                    percent = 10000  
                 if sum(budget_info.values()) + percent > 100:  
                     sprint("can't go over 100%")  
                     continue  
@@ -135,8 +145,11 @@ def budgeting(username, income):
                 with open(user_budget_file, mode="w", newline='') as file:  
                     writer = csv.writer(file)  
                     for cat, pct in budget_info.items():  
-                        writer.writerow([cat, pct])  
-                return  
+                        writer.writerow([cat, pct])
+                universe=False  
+                return 
+    else:
+        return 
 
 def currency(money, option):  
     
@@ -203,6 +216,4 @@ def entries(username):
   
     sprint(f"All entries for {today} have been saved in {entries_file}.")  
   
-# Example usage:  
-# entries("jacob")  
 
