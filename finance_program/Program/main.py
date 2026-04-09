@@ -2,8 +2,8 @@
 import csv  
 import hashlib
 from helper import sprint, processing, clearr
-from finance_program.Program.loginout import regis, login, hash
-from finance_program.Program.coding import currency, budgeting, time_frame
+from loginout import regis, login, hash
+from coding import currency, budgeting, time_frame
 #from Arsh.gui import *
 
 
