@@ -99,4 +99,3 @@ def finance_tracking_single(chosen_file, username, category, inputing):
         writer.writeheader()
         writer.writerows(all)
 
-finance_tracking_single('finance_program/documents/income.csv', 'mongol', 'Income', 35)
