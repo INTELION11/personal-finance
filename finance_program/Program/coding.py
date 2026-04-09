@@ -86,7 +86,8 @@ def budgeting(username, income):
     if change == "no":  
         currency_op = input("what currency do you want? 1.Yen 2.Usa 3.Pound: ").strip().lower()  
         for category in budget_info:  
-            should = currency(income * (budget_info[category]/100), currency_op)  
+            should = currency(income * (budget_info[category]/100), currency_op)
+              
             sprint(f"money you should spend for {category} is {should}")  
         with open(user_budget_file, mode="w", newline='') as file:  
             writer = csv.writer(file)  
