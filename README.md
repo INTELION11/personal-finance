@@ -1,9 +1,11 @@
-# High Score Tracker
+# Finance Tracker
+[Main Menu](finance_program/documents/Screenshot2026-04-09101005.png)
+
 ***
 
 This is a tool that you can use to track many things pertaining to your finances, including budgeting, income, 
 
-## How to use High Score Tracker
+## How to use Finance Tracker
 ***
 1. Running the code will instantly bring you into the game.
 2. Play and either beat the game or quit.
@@ -39,7 +41,7 @@ INTELION11
 
 kenhigashi-wq
 
-And Aiden-S-Codeler
+Aiden-S-Codeler
 
 W's in the chat for these guys!
 
