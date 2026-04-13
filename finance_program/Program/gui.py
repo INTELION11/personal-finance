@@ -399,7 +399,7 @@ class MainMenu(tk.Frame):
             activebackground="grey", 
             activeforeground="white", 
             overrelief="solid", 
-            #command = lambda : controller.show_frame(Page2)
+            command = lambda : controller.show_frame(Budgeting)
             )
         
         savings_goal_tracker_button = tk.Button(self, 
