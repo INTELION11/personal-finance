@@ -1,6 +1,6 @@
 import csv  
 from helper import sprint
-# from Aiden.piechart import piechart
+from piechart import piechart
 def time_frame(username, frame):  
     # open income.csv, look for username, get income if it exists  
     income_file = "finance_program/documents/income.csv"  
@@ -82,13 +82,18 @@ def budgeting(username, income):
         for category, percent in budget_info.items():  
             sprint(f"{category}: {percent}%\n")  
         change = input("Do you want to make changes? (yes/no): \n").strip().lower()  
-  
-    if change == "no":  
+
+    if change == "no":
+        categories = []
+        numbers = []
         currency_op = input("what currency do you want? 1.Yen 2.Usa 3.Pound: ").strip().lower()  
         for category in budget_info:  
             should = currency(income * (budget_info[category]/100), currency_op)
-              
-            sprint(f"money you should spend for {category} is {should}")  
+            numbers.append(should)
+            categories.append(category)
+            
+            sprint(f"money you should spend for {category} is {should}") 
+        piechart(categories, numbers)
         with open(user_budget_file, mode="w", newline='') as file:  
             writer = csv.writer(file)  
             for cat, pct in budget_info.items():  
