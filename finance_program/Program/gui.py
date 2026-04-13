@@ -2,7 +2,7 @@
 
 import tkinter as tk
 from tkinter import ttk
-from savings import Savings, save_goals
+from savings import Savings
 
 
 LARGEFONT =("Verdana", 35)
@@ -10,47 +10,12 @@ LARGEFONT =("Verdana", 35)
 import csv  
 import hashlib
           
-def login(option, password):  
-    loop = True  
-    while loop:  
-        #option = input("\033[38;2;0;125;1mWhat is your username? or type exit to exit\n").strip()  
-        if option == "exit": 
-             
-            loop = False  
-            return 'exit'
-        try:  
-            with open("finance_program/documents/login_Revulet.csv", mode="r") as file:  
-                reader = csv.reader(file, delimiter=',')                               
-                users = {}                                      
-                for line in reader:                             
-                    users[line[0]] = line[1]                    
-        except:                                                 
-            print("\033[38;2;0;125;1mcant find csv\n")                              
-            continue                                            
-        if option in users: 
-            #password = input("\033[38;2;0;125;1mEnter your password:\n").strip()
-            if password == "exit" or password == "Exit":
-                return password
-            encripted_pass = hash(password, option)
-            if encripted_pass == users[option]:  
-                
-                
-                print("\033[38;2;0;125;1mLogin successful!\n")
-                return option 
-            else: 
-                 
-                print("\033[38;2;255;1;1mIncorrect password, i thought you had an IQ higher than 85.\n")  
-        else:  
-            
-            print("\033[38;2;255;1;1mYou Spell Like my grandma.\n")
 
 def hash(password, username):
-    key = username[:3].encode()   #
-    hold_up = hashlib.blake2b(key=key, digest_size=64)    #
-    marmalade = hold_up.hexdigest()  #
-    hold_up.update(password.encode())    #
-    return marmalade  
-
+    key = username[:3].encode()
+    h = hashlib.blake2b(key=key, digest_size=64)
+    h.update(password.encode())
+    return h.hexdigest()
 
 class tkinterApp(tk.Tk):
     
@@ -72,18 +37,18 @@ class tkinterApp(tk.Tk):
  
         # iterating through a tuple consisting
         # of the different page layouts
-        for F in (LoginSignup, Login, Signup, SignupEnterPass, MainMenu):
+        for F in (LoginSignup, Login, Signup, SignupEnterPass, MainMenu, Savings):
  
             frame = F(container, self)
  
             # initializing frame of that object from
             # startpage, page1, page2 respectively with 
             # for loop
-            self.frames[F] = frame 
+            self.frames[F.__name__] = frame 
  
             frame.grid(row = 0, column = 0, sticky ="nsew")
  
-        self.show_frame(LoginSignup)
+        self.show_frame("LoginSignup")
  
     # to display the current frame passed as
     # parameter
@@ -109,7 +74,7 @@ class LoginSignup(tk.Frame):
             activebackground="grey", 
             activeforeground="white", 
             overrelief="solid",
-            command = lambda : controller.show_frame(Login))
+            command = lambda : controller.show_frame("Login"))
 
         signup_button = tk.Button(self, 
             text="Signup", 
@@ -121,7 +86,7 @@ class LoginSignup(tk.Frame):
             activebackground="grey", 
             activeforeground="white", 
             overrelief="solid",
-            command = lambda : controller.show_frame(Signup))
+            command = lambda : controller.show_frame("Signup"))
         
         login_button.pack(pady=5)
         signup_button.pack(pady=5)
@@ -156,12 +121,38 @@ class Login(tk.Frame):
             bg="white",
             show="*")
         
-        def print_user_pass():
-            user_text = username_entry.get()
-            pass_text = password_entry.get()
-            print(user_text)
-            print(pass_text)
-            controller.show_frame(MainMenu)
+        def login_func():
+            username = username_entry.get().strip().lower()
+            password = password_entry.get().strip()
+
+            if username.lower() == "exit" or password.lower() == "exit":
+                login_label['text'] = "Cancelled"
+                return
+
+            try:
+                with open("finance_program/documents/login_Revulet.csv", mode="r") as file:
+                    reader = csv.reader(file)
+                    users = {}
+
+                    for line in reader:
+                        if len(line) >= 2:
+                            users[line[0].strip()] = line[1].strip()
+
+                if username in users:
+                    encrypted_input = hash(password, username)
+
+                    if encrypted_input == users[username]:
+                        controller.current_user = username
+                        login_label['fg'] = ["green"]
+                        login_label['text'] = "Login successful!"
+                        controller.after(1500, lambda: controller.show_frame("MainMenu"))
+                    else:
+                        login_label['text'] = "Wrong password"
+                else:
+                    login_label['text'] = "User not found"
+
+            except Exception as e:
+                login_label['text'] = f"ERROR: {repr(e)}"
 
         submit_button = tk.Button(self, 
             text="Sign In", 
@@ -173,7 +164,11 @@ class Login(tk.Frame):
             activebackground="grey", 
             activeforeground="white", 
             overrelief="solid",
-            command=print_user_pass)
+            command=login_func)
+        
+        login_label = tk.Label(self,
+            text="",
+            font=("Helvetica", 15))
         
         back_button = tk.Button(self, 
             text="Back", 
@@ -185,7 +180,7 @@ class Login(tk.Frame):
             activebackground="grey", 
             activeforeground="white", 
             overrelief="solid",
-            command = lambda : controller.show_frame(LoginSignup))
+            command = lambda : controller.show_frame("LoginSignup"))
 
 
         username_label.pack(padx=20, pady=5, anchor="center")
@@ -193,6 +188,7 @@ class Login(tk.Frame):
         password_label.pack(padx=20, pady=5, anchor="center")
         password_entry.pack(padx=20, pady=10, anchor="center")
         submit_button.pack(padx=20, pady=15, anchor="center")
+        login_label.pack(padx=20, pady=15, anchor="center")
         back_button.pack(padx=30, pady=(15,100), anchor="sw", side="left")
 
 class Signup(tk.Frame):
@@ -214,34 +210,30 @@ class Signup(tk.Frame):
 
                 
         def check_username(username):
-            loop = True  
-            while loop:  
-                username=username_entry.get()
-                try:  
-                    with open("finance_program/documents/login_Revulet.csv", mode="r+") as file:  
-                        reader = csv.reader(file, delimiter=',')   
-                        users = []  
-                        for line in reader:  
-                            users.append({line[0]: line[1]})  
-                except:  
-                    cant_find_csv = "Can't find CSV" 
-                    check_label['text'] = str(cant_find_csv)
-                    continue  
+            username=username_entry.get().strip().lower()
+            try:  
+                with open("finance_program/documents/login_Revulet.csv", mode="r+") as file:  
+                    reader = csv.reader(file, delimiter=',')   
+                    users = []  
+                    for line in reader:  
+                        users.append({line[0]: line[1]})  
+            except:  
+                cant_find_csv = "Can't find CSV" 
+                check_label['text'] = str(cant_find_csv)
 
-                found = False  
-                for user in users:  
-                    if username in user:
-                        already_in_database = "Already in data base"
-                        check_label['text'] = str(already_in_database)
-                        found = True 
-                        loop = False 
-                        break  
-                if not found:
-                    controller.showframe(SignupEnterPass)
-    
+            found = False  
+            for user in users:  
+                if username in user:
+                    already_in_database = "Already in data base"
+                    check_label['text'] = str(already_in_database)
+                    found = True 
+            if not found:
+                controller.current_user = username
+                controller.show_frame("SignupEnterPass")
+
                 
         def get_user():
-            user_text = username_entry.get()
+            user_text = username_entry.get().strip().lower()
             print(user_text)
             check_username(user_text)
 
@@ -271,7 +263,7 @@ class Signup(tk.Frame):
             activebackground="grey", 
             activeforeground="white", 
             overrelief="solid",
-            command = lambda : controller.show_frame(LoginSignup))
+            command = lambda : controller.show_frame("LoginSignup"))
         
         username_label.pack(padx=20, pady=5, anchor="center")
         username_entry.pack(padx=20, pady=10, anchor="center")
@@ -296,61 +288,52 @@ class SignupEnterPass(tk.Frame):
             bg="white",
             show="*")
         
-        def pass_enter(username):
-            password = pass_cheker()
-            encripted_pass = hash(password,username)
-            if password == "exit" or password == "Exit":
-                    
-                loop = False
-                return 
-            try:  
-                with open("finance_program/documents/login_Revulet.csv", mode="a", newline='') as file:  
-                    writer = csv.writer(file)  
-                    writer.writerow([username, encripted_pass])
-                
-                    
-                user_added = "User added"
-                check_label['text'] = str(user_added)
-                
-            
-            except:  
-                could_not_write = "Could not write to file"
-                check_label['text'] = str(could_not_write)
-            return username
         
-        def pass_cheker():  
+        def pass_cheker(check_label):  
             special_characters = "!@#\\$%^&*()_+-=[]{|;:,}.><?)"  
             numbers = "1234567890"  
-            while True:  
-                password = input("\033[38;2;49;125;125mgood, now select your password, or type exit to exit, \033[38;2;255;1;1mmake sure its a strong password with all basics, '/' does not work\n").strip()
-                if password == "exit" or password == "Exit":
-                    password = "exit"
-                    return password
-                errors = []  
-                if len(password) < 8:  
-                    errors.append("at least 8 characters")  
-                if not any(char in numbers for char in password):  
-                    errors.append("a number")  
-                if not any(char in special_characters for char in password):  
-                    errors.append("a special character")  
-                if not any(char.isupper() for char in password):  
-                    errors.append("an uppercase letter")  
-                if not any(char.islower() for char in password):  
-                    errors.append("a lowercase letter")  
-                
-                if errors:
-                      
-                    print("\033[38;2;255;1;1mPassword is not strong enough, What are you, a millenial?🤣\n")  
-                    print("\033[38;2;255;1;1mMissing: " + ", ".join(errors) + "\n")  
-                else:
-                      
-                    print("\033[38;2;49;125;125mPassword is strong!\n")  
-                    return password
-        
-        def get_pass():
-            pass_text = password_entry.get()
-            print(pass_text)
-            #pass_enter(username)
+
+            password = password_entry.get().strip()
+
+            if password.lower() == "exit":
+                check_label['text'] = "Cancelled"
+                return
+
+            errors = []
+
+            if len(password) < 8:
+                errors.append("at least 8 characters")
+
+            if not any(char in numbers for char in password):
+                errors.append("a number")
+
+            if not any(char in special_characters for char in password):
+                errors.append("a special character")
+
+            if not any(char.isupper() for char in password):
+                errors.append("an uppercase letter")
+
+            if not any(char.islower() for char in password):
+                errors.append("a lowercase letter")
+
+            if errors:
+                check_label['text'] = "Missing: " + ", ".join(errors)
+            else:
+                username = controller.current_user
+
+                try:
+                    encripted_pass = hash(password, username)
+
+                    with open("finance_program/documents/login_Revulet.csv", mode="a", newline="") as file:
+                        writer = csv.writer(file)
+                        writer.writerow([username, encripted_pass])
+
+                    check_label['fg'] = ["green"]
+                    check_label['text'] = "Password is strong! User added successfully."
+                    controller.after(2000, lambda: controller.show_frame("MainMenu"))
+
+                except:
+                    check_label['text'] = "Could not write to file"
 
         submit_button = tk.Button(self, 
             text="Login", 
@@ -362,7 +345,7 @@ class SignupEnterPass(tk.Frame):
             activebackground="grey", 
             activeforeground="white", 
             overrelief="solid",
-            command=get_pass)
+            command=lambda: pass_cheker(check_label))
         
         check_label = tk.Label(self,
             text="",
@@ -378,11 +361,12 @@ class SignupEnterPass(tk.Frame):
             activebackground="grey", 
             activeforeground="white", 
             overrelief="solid",
-            command = lambda : controller.show_frame(Signup))
+            command = lambda : controller.show_frame("Signup"))
         
         password_label.pack(padx=20, pady=5, anchor="center")
         password_entry.pack(padx=20, pady=10, anchor="center")
         submit_button.pack(padx=20, pady=15, anchor="center")
+        check_label.pack(padx=20, pady=15, anchor="center")
         back_button.pack(padx=20, pady=(15) , anchor="sw", side="left")
 
 class MainMenu(tk.Frame):
@@ -428,7 +412,7 @@ class MainMenu(tk.Frame):
             activebackground="grey", 
             activeforeground="white", 
             overrelief="solid", 
-            #command = lambda : controller.show_frame(Page2)
+            command = lambda : controller.show_frame("Savings")
             )
         
         exit = tk.Button(self, 
@@ -441,7 +425,7 @@ class MainMenu(tk.Frame):
             activebackground="grey", 
             activeforeground="white", 
             overrelief="solid", 
-            #command = lambda : self.root.destroy()
+            command = controller.destroy
             )
 
         # 25 pixels away
