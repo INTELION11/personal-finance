@@ -3,7 +3,7 @@
 import tkinter as tk
 from tkinter import ttk
 from savings import Savings
-
+from coding_but_Tkinter import Budgeting
 
 LARGEFONT =("Verdana", 35)
 
@@ -37,7 +37,7 @@ class tkinterApp(tk.Tk):
  
         # iterating through a tuple consisting
         # of the different page layouts
-        for F in (LoginSignup, Login, Signup, SignupEnterPass, MainMenu, Savings):
+        for F in (LoginSignup, Login, Signup, SignupEnterPass, MainMenu, Savings,Budgeting):
  
             frame = F(container, self)
  
