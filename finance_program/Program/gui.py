@@ -12,6 +12,7 @@ import csv
 import hashlib
           
 
+print()
 def hash(password, username):
     key = username[:3].encode()
     h = hashlib.blake2b(key=key, digest_size=64)
