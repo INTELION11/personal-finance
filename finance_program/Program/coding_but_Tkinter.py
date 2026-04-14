@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 import csv
- 
+from piechart import piechart
 LARGEFONT = ("Verdana", 35)
  
  
@@ -26,8 +26,6 @@ def _currency(money, option):
             return f"£{money * 0.8:.2f} Pound (backup)"
         else:
             return f"${money:.2f} USD (backup)"
- 
- 
 def _load_income(username):
 
     try:
@@ -42,8 +40,6 @@ def _load_income(username):
     except FileNotFoundError:
         pass
     return None
- 
- 
 def _save_income(username, income):
     income_file = "finance_program/documents/income.csv"
     users = []
@@ -62,8 +58,6 @@ def _save_income(username, income):
         users.append([username, str(income)])
     with open(income_file, mode="w", newline="") as f:
         csv.writer(f).writerows(users)
- 
- 
 class Budgeting(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -286,10 +280,16 @@ class Budgeting(tk.Frame):
             return
         cur_opt = self.currency_var.get()
         lines = []
+        category=[]
+        data =[]
         for cat, pct in self.budget_info.items():
             amount = self.income * (pct / 100)
             lines.append(f"{cat}: {_currency(amount, cur_opt)}")
+            category.append(cat)
+            data.append(pct)
+        piechart(category,data)
         self._status("  |  ".join(lines), "blue")
+        
         self._save_csv()
  
     def _save_and_back(self):

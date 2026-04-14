@@ -4,6 +4,7 @@ import tkinter as tk
 from tkinter import ttk
 from savings import Savings
 from coding_but_Tkinter import Budgeting
+from entry import IncomeTracking
 
 LARGEFONT =("Verdana", 35)
 
@@ -37,7 +38,7 @@ class tkinterApp(tk.Tk):
  
         # iterating through a tuple consisting
         # of the different page layouts
-        for F in (LoginSignup, Login, Signup, SignupEnterPass, MainMenu, Savings,Budgeting):
+        for F in (LoginSignup, Login, Signup, SignupEnterPass, MainMenu, Savings,Budgeting,IncomeTracking):
  
             frame = F(container, self)
  
@@ -386,7 +387,7 @@ class MainMenu(tk.Frame):
             activebackground="grey", 
             activeforeground="white", 
             overrelief="solid", 
-            #command = lambda : controller.show_frame(IncomeExpenseTracking)
+            command = lambda : controller.show_frame("IncomeTracking")
             )
         
         budgeting_button = tk.Button(self, 
