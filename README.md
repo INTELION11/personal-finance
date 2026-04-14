@@ -29,7 +29,7 @@ You will need Python to run this successfully.
 
 ## Installation Instructions
 ***
--Need to download: matplotlib, tkinter, pandas, faker, and numpy
+-Need to download: matplotlib, tkinter, pandas, faker, forex, and numpy
 
 -To download open a terminal and type "pip intall {name of thing you are downloading}
 
