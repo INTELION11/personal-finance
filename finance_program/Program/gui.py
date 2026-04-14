@@ -5,14 +5,11 @@ from tkinter import ttk
 from savings import Savings
 from coding_but_Tkinter import Budgeting
 from entry import IncomeTracking
-
-LARGEFONT =("Verdana", 35)
-
 import csv  
 import hashlib
-          
 
-print()
+LARGEFONT =("Verdana", 35)
+          
 def hash(password, username):
     key = username[:3].encode()
     h = hashlib.blake2b(key=key, digest_size=64)
@@ -21,39 +18,28 @@ def hash(password, username):
 
 class tkinterApp(tk.Tk):
     
-    # __init__ function for class tkinterApp 
     def __init__(self, *args, **kwargs): 
         
-        # __init__ function for class Tk
         tk.Tk.__init__(self, *args, **kwargs)
         
-        # creating a container
         container = tk.Frame(self)  
         container.pack(side = "top", fill = "both", expand = True)
  
         container.grid_rowconfigure(0, weight = 1)
         container.grid_columnconfigure(0, weight = 1)
  
-        # initializing frames to an empty array
         self.frames = {}  
- 
-        # iterating through a tuple consisting
-        # of the different page layouts
-        for F in (LoginSignup, Login, Signup, SignupEnterPass, MainMenu, Savings,Budgeting,IncomeTracking):
+
+        for F in (LoginSignup, Login, Signup, SignupEnterPass, MainMenu, Savings, Budgeting, IncomeTracking):
  
             frame = F(container, self)
  
-            # initializing frame of that object from
-            # startpage, page1, page2 respectively with 
-            # for loop
             self.frames[F.__name__] = frame 
  
             frame.grid(row = 0, column = 0, sticky ="nsew")
  
         self.show_frame("LoginSignup")
  
-    # to display the current frame passed as
-    # parameter
     def show_frame(self, cont):
         frame = self.frames[cont]
         frame.tkraise()
@@ -401,7 +387,7 @@ class MainMenu(tk.Frame):
             activebackground="grey", 
             activeforeground="white", 
             overrelief="solid", 
-            command = lambda : controller.show_frame(Budgeting)
+            command = lambda : controller.show_frame("Budgeting")
             )
         
         savings_goal_tracker_button = tk.Button(self, 
@@ -415,6 +401,19 @@ class MainMenu(tk.Frame):
             activeforeground="white", 
             overrelief="solid", 
             command = lambda : controller.show_frame("Savings")
+            )
+        
+        logout_button = tk.Button(self,
+            text="Logout", 
+            width=50, 
+            height=4, 
+            font=("Helvetica", 15), 
+            bd=5, 
+            bg="white", 
+            activebackground="grey", 
+            activeforeground="white", 
+            overrelief="solid", 
+            command = lambda : controller.show_frame("LoginSignup")
             )
         
         exit = tk.Button(self, 
@@ -434,11 +433,5 @@ class MainMenu(tk.Frame):
         income_expense_tracking_button.pack(padx=20, pady=10, anchor="center")
         budgeting_button.pack(padx=20, pady=10, anchor="center")
         savings_goal_tracker_button.pack(padx=20, pady=10, anchor="center")
+        logout_button.pack(padx=20, pady=10, anchor="center")
         exit.pack(padx=20, pady=10, anchor="center")
-
-
-        
-
-app = tkinterApp()
-app.geometry("1000x1000")
-app.mainloop()

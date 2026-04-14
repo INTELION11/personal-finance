@@ -58,6 +58,7 @@ def _save_income(username, income):
         users.append([username, str(income)])
     with open(income_file, mode="w", newline="") as f:
         csv.writer(f).writerows(users)
+        
 class Budgeting(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)

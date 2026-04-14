@@ -5,7 +5,7 @@ from helper import sprint, processing, clearr
 import hashlib  
 def regis():
     def pass_cheker():  
-        special_characters = "!@#\$%^&*()_+-=[]{|;:,}.><?)"  
+        special_characters = "!@#\\$%^&*()_+-=[]{|;:,}.><?)"  
         numbers = "1234567890"  
         while True:  
             password = input("\033[38;2;49;125;125mgood, now select your password, or type exit to exit, \033[38;2;255;1;1mmake sure its a strong password with all basics, '/' does not work\n").strip()
